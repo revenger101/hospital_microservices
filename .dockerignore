@@ -1,0 +1,12 @@
+**/target
+**/.mvn
+**/.idea
+**/.vscode
+**/*.iml
+**/.classpath
+**/.project
+**/.settings
+**/node_modules
+**/build
+**/out
+**/.DS_Store

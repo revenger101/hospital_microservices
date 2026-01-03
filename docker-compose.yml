@@ -1,0 +1,93 @@
+services:
+  eureka:
+    build:
+      context: ./Eureka_Discovery_Server
+    container_name: eureka-discovery-server
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_INSTANCE_HOSTNAME=eureka
+    networks:
+      - hospital-net
+
+  api-gateway:
+    build:
+      context: ./API_Gateway_Service
+    container_name: api-gateway-service
+    depends_on:
+      - eureka
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    networks:
+      - hospital-net
+
+  auth-service:
+    build:
+      context: ./Auth_Service
+    container_name: auth-service
+    depends_on:
+      - eureka
+    ports:
+      - "8090:8090"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    networks:
+      - hospital-net
+
+  patient-service:
+    build:
+      context: ./Patient_Service
+    container_name: patient-service
+    depends_on:
+      - eureka
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    networks:
+      - hospital-net
+
+  doctor-service:
+    build:
+      context: ./Doctor_Service
+    container_name: doctor-service
+    depends_on:
+      - eureka
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    networks:
+      - hospital-net
+
+  notification-service:
+    build:
+      context: ./Notification_Service
+    container_name: notification-service
+    depends_on:
+      - eureka
+    ports:
+      - "8083:8083"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    networks:
+      - hospital-net
+
+  appointment-service:
+    build:
+      context: ./Appointment_Service
+    container_name: appointment-service
+    depends_on:
+      - eureka
+    ports:
+      - "8084:8084"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    networks:
+      - hospital-net
+
+networks:
+  hospital-net:
+    driver: bridge
